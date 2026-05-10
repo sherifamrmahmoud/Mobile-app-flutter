@@ -1,5 +1,5 @@
-import 'package:projecttt1/core/models/appointment.dart';
-import 'package:projecttt1/core/models/specialist.dart';
+import '../../../core/models/appointment.dart';
+import '../../../core/models/specialist.dart';
 
 
 abstract class HomeState {}
