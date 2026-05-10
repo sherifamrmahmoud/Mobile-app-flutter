@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "884741782531",
-    "project_id": "medicall-f359a",
-    "storage_bucket": "medicall-f359a.firebasestorage.app"
+    "project_number": "244922269312",
+    "project_id": "medicall-c10d6",
+    "storage_bucket": "medicall-c10d6.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:884741782531:android:2a1db189013eedaacba236",
+        "mobilesdk_app_id": "1:244922269312:android:1d4314d4fb9a7b798a7065",
+        "android_client_info": {
+          "package_name": "com.company.appname"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD38jnzqVKDGTsjR-UBp4Cx2gT9VmjA-C4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244922269312:android:6b2daac75414fd608a7065",
         "android_client_info": {
           "package_name": "com.example.nti5"
         }
@@ -15,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyARU7QBdF1ELqjfvlfTYGhB3o4l9Q53r34"
+          "current_key": "AIzaSyD38jnzqVKDGTsjR-UBp4Cx2gT9VmjA-C4"
         }
       ],
       "services": {
