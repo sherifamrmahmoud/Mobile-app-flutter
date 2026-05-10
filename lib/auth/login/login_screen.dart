@@ -5,7 +5,6 @@ import 'package:nti5/auth/cubit/auth_state.dart';
 import 'package:nti5/auth/signup/signup_screen.dart';
 import 'package:nti5/auth/widgets/custom_text_form_field.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -149,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     SizedBox(height: size.height * 0.01),
 
                                     CustomTextFormField(
-                                      hint: 'doctor@hospital.com',
+                                      hint: 'user@gmail.com',
                                       controller: emailController,
                                       prefixIcon: Icons.email_outlined,
                                       keyboardType: TextInputType.emailAddress,
@@ -349,4 +348,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
