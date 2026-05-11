@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nti5/auth/cubit/auth_cubit.dart';
 import 'package:nti5/auth/cubit/auth_state.dart';
+import 'package:nti5/auth/widgets/SnackBarHelper%20.dart';
+
 import 'package:nti5/auth/widgets/custom_text_form_field.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -17,6 +19,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  bool isPasswordVisible = false;
 
   @override
   void dispose() {
@@ -62,12 +66,11 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         ],
       ),
+
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text("Account Created")));
+            SnackBarHelper.success(context, "Account Created");
 
             Future.delayed(const Duration(milliseconds: 500), () {
               Navigator.pushReplacementNamed(context, '/login');
@@ -75,9 +78,7 @@ class _SignupScreenState extends State<SignupScreen> {
           }
 
           if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            SnackBarHelper.error(context, state.message);
           }
         },
 
@@ -93,32 +94,26 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Create your account',
                         style: TextStyle(
-                          fontSize: size.width * 0.08,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
 
-                      SizedBox(height: size.height * 0.015),
+                      const SizedBox(height: 10),
 
                       Text(
                         'Join the MEDI CALL community and manage your healthcare journey with ease and efficiency.',
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: size.width * 0.035,
-                        ),
+                        style: TextStyle(color: Colors.grey.shade600),
                       ),
 
-                      SizedBox(height: size.height * 0.04),
+                      const SizedBox(height: 30),
 
                       // NAME
-                      Text(
-                        'Full Name',
-                        style: TextStyle(fontSize: size.width * 0.04),
-                      ),
-                      SizedBox(height: size.height * 0.01),
+                      const Text('Full Name'),
+                      const SizedBox(height: 8),
 
                       CustomTextFormField(
                         hint: 'Enter your full name',
@@ -132,14 +127,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
                       ),
 
-                      SizedBox(height: size.height * 0.02),
+                      const SizedBox(height: 15),
 
                       // EMAIL
-                      Text(
-                        'Email Address',
-                        style: TextStyle(fontSize: size.width * 0.04),
-                      ),
-                      SizedBox(height: size.height * 0.01),
+                      const Text('Email Address'),
+                      const SizedBox(height: 8),
 
                       CustomTextFormField(
                         hint: 'name@example.com',
@@ -154,34 +146,48 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
                       ),
 
-                      SizedBox(height: size.height * 0.02),
+                      const SizedBox(height: 15),
 
                       // PASSWORD
-                      Text(
-                        'Password',
-                        style: TextStyle(fontSize: size.width * 0.04),
-                      ),
-                      SizedBox(height: size.height * 0.01),
+                      const Text('Password'),
+                      const SizedBox(height: 8),
 
                       CustomTextFormField(
                         hint: 'Create a secure password',
                         controller: passwordController,
                         prefixIcon: Icons.lock_outline,
-                        obscure: true,
+                        obscure: !isPasswordVisible,
+
+                        suffix: IconButton(
+                          icon: Icon(
+                            isPasswordVisible
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible;
+                            });
+                          },
+                        ),
+
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Password is required";
+                          }
+                          if (value.length < 6) {
+                            return "Password must be at least 6 characters";
                           }
                           return null;
                         },
                       ),
 
-                      SizedBox(height: size.height * 0.03),
+                      const SizedBox(height: 25),
 
                       // BUTTON
                       SizedBox(
                         width: double.infinity,
-                        height: size.height * 0.07,
+                        height: 55,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
@@ -194,6 +200,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               ? null
                               : () {
                                   if (formKey.currentState!.validate()) {
+                                    FocusScope.of(context).unfocus();
+
                                     context.read<AuthCubit>().signUp(
                                       emailController.text,
                                       passwordController.text,
@@ -211,83 +219,12 @@ class _SignupScreenState extends State<SignupScreen> {
                                     strokeWidth: 2,
                                   ),
                                 )
-                              : Text(
-                                  'Create Account',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: size.width * 0.045,
-                                  ),
+                              : const Text(
+                                  "Create Account",
+                                  style: TextStyle(color: Colors.white),
                                 ),
                         ),
                       ),
-
-                      SizedBox(height: size.height * 0.03),
-
-                      Center(
-                        child: Text(
-                          'OR SIGN UP WITH',
-                          style: TextStyle(fontSize: size.width * 0.035),
-                        ),
-                      ),
-
-                      SizedBox(height: size.height * 0.02),
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.g_mobiledata),
-                              label: Text(
-                                'Google',
-                                style: TextStyle(fontSize: size.width * 0.035),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: size.width * 0.04),
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                              ),
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.apple,
-                                color: Colors.white,
-                              ),
-                              label: Text(
-                                'Apple',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: size.width * 0.035,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: size.height * 0.03),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Already have an account? '),
-                          GestureDetector(
-                            onTap: () => Navigator.pop(context),
-                            child: Text(
-                              'Log In',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                                fontSize: size.width * 0.04,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: size.height * 0.02),
                     ],
                   ),
                 ),
@@ -299,4 +236,3 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
-
